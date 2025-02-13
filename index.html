@@ -33,37 +33,30 @@
 
     <!-- Visitor Tracking Script -->
     <script>
-        function getVisitorData() {
-            return {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                screenSize: screen.width + "x" + screen.height,
-                referrer: document.referrer || "Direct Visit",
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-            };
-        }
+  function getVisitorData() {
+    return {
+      userAgent: navigator.userAgent,
+      platform: navigator.platform,
+      screenSize: screen.width + "x" + screen.height,
+      referrer: document.referrer || "Direct Visit",
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    };
+  }
 
-        function sendVisitorData() {
-            let data = getVisitorData();
-            let form = document.createElement("form");
-            form.method = "POST";
-            form.action = "https://formsubmit.co/el/donecu"; // Replace with your FormSubmit link
-            form.style.display = "none";
+  function sendVisitorData() {
+    let data = getVisitorData();
 
-            for (let key in data) {
-                let input = document.createElement("input");
-                input.type = "hidden";
-                input.name = key;
-                input.value = data[key];
-                form.appendChild(input);
-            }
+    // Replace YOUR_EMAIL with your actual FormSubmit link
+    fetch("https://formsubmit.co/YOUR_EMAIL?no-captcha=true&no-recaptcha=true", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.ok ? console.log("Visitor data sent!") : console.error("Failed to send data"))
+    .catch(error => console.error("Error:", error));
+  }
 
-            document.body.appendChild(form);
-            form.submit();
-        }
-
-        window.onload = sendVisitorData;
+  window.onload = sendVisitorData;
     </script>
-
 </body>
 </html>
