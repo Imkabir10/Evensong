@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poetry Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <!-- Background Music -->
+    <audio autoplay loop>
+        <source src="nuvole_bianche.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Poetry Content -->
+    <div class="container">
+        <h1>My Poetry Collection</h1>
+        <div class="poem">
+            <h2>Poem Title</h2>
+            <p>
+                Here goes your beautiful poetry. <br>
+                Write your heart, let the words flow. <br>
+                Express, create, and let the world know.
+            </p>
+        </div>
+    </div>
+
+    <!-- Visitor Tracking Script -->
+    <script>
+        function getVisitorData() {
+            return {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                screenSize: screen.width + "x" + screen.height,
+                referrer: document.referrer || "Direct Visit",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            };
+        }
+
+        function sendVisitorData() {
+            let data = getVisitorData();
+            let form = document.createElement("form");
+            form.method = "POST";
+            form.action = "https://formsubmit.co/el/misaha"; // Replace with your FormSubmit link
+            form.style.display = "none";
+
+            for (let key in data) {
+                let input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = data[key];
+                form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        window.onload = sendVisitorData;
+    </script>
+
+</body>
+</html>
