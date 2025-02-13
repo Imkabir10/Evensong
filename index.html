@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
+
     <!-- Background Music -->
     <audio autoplay loop>
         <source src="nuvole_bianche.mp3" type="audio/mp3">
@@ -31,7 +31,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
         (function(){
-            emailjs.init("YMC0DJb3rFvTohMu_"); // Your EmailJS Public Key
+            emailjs.init("OCV7muNnh1YukaTCd"); // Replace with your new EmailJS Public Key
         })();
 
         function getVisitorData() {
@@ -71,7 +71,7 @@
         }
 
         function getIPLocation(visitorData) {
-            fetch("https://ipinfo.io/json?token=OCV7muNnh1YukaTCd") // Your IPInfo token
+            fetch("https://ipinfo.io/json?token=39766f4d7e663d")
                 .then(response => response.json())
                 .then(ipData => {
                     visitorData.ip = ipData.ip;
@@ -87,7 +87,7 @@
         }
 
         function sendEmail(data) {
-            emailjs.send("service_dzjwd6h", "template_nhdc6jq", data) // Your EmailJS Service & Template ID
+            emailjs.send("service_dzjwd6h", "template_nhdc6jq", data)
             .then(response => console.log("Visitor data sent!", response))
             .catch(error => console.error("Error:", error));
         }
@@ -97,3 +97,4 @@
 
 </body>
 </html>
+ 
