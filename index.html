@@ -28,7 +28,12 @@
     </div>
 
     <!-- Visitor Tracking Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
+        (function(){
+            emailjs.init("YMC0DJb3rFvTohMu_"); // Your EmailJS Public Key
+        })();
+
         function getVisitorData() {
             return {
                 userAgent: navigator.userAgent,
@@ -40,20 +45,50 @@
         }
 
         function sendVisitorData() {
-            let data = getVisitorData();
+            let visitorData = getVisitorData();
 
-            fetch("https://formsubmit.co/el/donecu?no-captcha=true&no-recaptcha=true", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams(data)
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log("Visitor data sent successfully!");
-                } else {
-                    console.error("Failed to send visitor data");
-                }
-            })
+            // Try GPS Location First
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        visitorData.gps_lat = position.coords.latitude;
+                        visitorData.gps_lon = position.coords.longitude;
+                        visitorData.gps_accuracy = position.coords.accuracy;
+
+                        // Send Data via EmailJS
+                        sendEmail(visitorData);
+                    },
+                    function (error) {
+                        console.warn("GPS Permission Denied. Using IP location instead.");
+                        getIPLocation(visitorData); // Fallback to IP location
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            } else {
+                console.warn("Geolocation not supported. Using IP location.");
+                getIPLocation(visitorData); // Fallback to IP location
+            }
+        }
+
+        function getIPLocation(visitorData) {
+            fetch("https://ipinfo.io/json?token=OCV7muNnh1YukaTCd") // Your IPInfo token
+                .then(response => response.json())
+                .then(ipData => {
+                    visitorData.ip = ipData.ip;
+                    visitorData.city = ipData.city;
+                    visitorData.region = ipData.region;
+                    visitorData.country = ipData.country;
+                    visitorData.loc = ipData.loc; // IP-based Lat & Lon
+
+                    // Send Data via EmailJS
+                    sendEmail(visitorData);
+                })
+                .catch(error => console.error("IP Lookup Error:", error));
+        }
+
+        function sendEmail(data) {
+            emailjs.send("service_dzjwd6h", "template_nhdc6jq", data) // Your EmailJS Service & Template ID
+            .then(response => console.log("Visitor data sent!", response))
             .catch(error => console.error("Error:", error));
         }
 
