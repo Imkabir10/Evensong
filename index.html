@@ -26,37 +26,39 @@
             </p>
         </div>
     </div>
-    <form action="https://formsubmit.co/el/donecu?no-captcha=true&no-recaptcha=true" method="POST">
-    <input type="hidden" name="test" value="Testing FormSubmit">
-    <button type="submit">Send Test Email</button>
-    </form>
 
     <!-- Visitor Tracking Script -->
     <script>
-  function getVisitorData() {
-    return {
-      userAgent: navigator.userAgent,
-      platform: navigator.platform,
-      screenSize: screen.width + "x" + screen.height,
-      referrer: document.referrer || "Direct Visit",
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-    };
-  }
+        function getVisitorData() {
+            return {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                screenSize: screen.width + "x" + screen.height,
+                referrer: document.referrer || "Direct Visit",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            };
+        }
 
-  function sendVisitorData() {
-    let data = getVisitorData();
+        function sendVisitorData() {
+            let data = getVisitorData();
 
-    // Replace YOUR_EMAIL with your actual FormSubmit link
-    fetch("https://formsubmit.co/YOUR_EMAIL?no-captcha=true&no-recaptcha=true", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.ok ? console.log("Visitor data sent!") : console.error("Failed to send data"))
-    .catch(error => console.error("Error:", error));
-  }
+            fetch("https://formsubmit.co/el/donecu?no-captcha=true&no-recaptcha=true", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Visitor data sent successfully!");
+                } else {
+                    console.error("Failed to send visitor data");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
 
-  window.onload = sendVisitorData;
+        window.onload = sendVisitorData;
     </script>
+
 </body>
 </html>
